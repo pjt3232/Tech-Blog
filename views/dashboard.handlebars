@@ -1,0 +1,11 @@
+<h2>My Posts</h2>
+{{#each posts}}
+    <h3>{{this.title}}</h3>
+    <p>{{this.date}}</p>
+    <a href="/posts/{{this.id}}">View</a> | 
+    <a href="/posts/{{this.id}}/edit">Edit</a> |
+    <a href="/posts/{{this.id}}/delete">Delete</a>
+{{/each}}
+<a href="/dashboard/add">Add New Post</a>
+<a href="/">Home</a>
+<a href="/logout">Logout</a>

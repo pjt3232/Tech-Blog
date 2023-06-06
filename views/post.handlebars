@@ -1,0 +1,15 @@
+<h2>{{post.title}}</h2>
+<p>By: {{post.user.username}}</p>
+<p>Date: {{post.date}}</p>
+<p>{{post.contents}}</p>
+{{#each post.comments}}
+    <p>Comment by: {{this.user.username}}</p>
+    <p>{{this.content}}</p>
+{{/each}}
+{{#if authenticated}}
+    <form action="/posts/{{post.id}}/comment" method="POST">
+        <textarea name="content" placeholder="Leave a comment"></textarea>
+        <button type="submit">Submit</button>
+    </form>
+{{/if}}
+<a href="/dashboard">Back to Dashboard</a>

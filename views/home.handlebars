@@ -1,0 +1,10 @@
+{{#each posts}}
+    <h2>{{this.title}}</h2>
+    <p>{{this.date}}</p>
+{{/each}}
+<a href="/dashboard">Dashboard</a>
+{{#if authenticated}}
+    <a href="/logout">Logout</a>
+{{else}}
+    <a href="/login">Login</a> | <a href="/signup">Signup</a>
+{{/if}}
