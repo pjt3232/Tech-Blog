@@ -1,0 +1,17 @@
+[
+    {
+        "content": "Nice to meet you, John!",
+        "postId": 1,
+        "userId": 2
+    },
+    {
+        "content": "I agree!",
+        "postId": 2,
+        "userId": 3
+    },
+    {
+        "content": "The Milwaukee Bucks",
+        "postId": 3,
+        "userId": 2
+    }
+]
