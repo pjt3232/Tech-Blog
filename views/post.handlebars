@@ -1,15 +1,21 @@
-<h2>{{post.title}}</h2>
-<p>By: {{post.user.username}}</p>
-<p>Date: {{post.date}}</p>
-<p>{{post.contents}}</p>
-{{#each post.comments}}
-    <p>Comment by: {{this.user.username}}</p>
-    <p>{{this.content}}</p>
-{{/each}}
-{{#if authenticated}}
-    <form action="/posts/{{post.id}}/comment" method="POST">
-        <textarea name="content" placeholder="Leave a comment"></textarea>
-        <button type="submit">Submit</button>
-    </form>
-{{/if}}
-<a href="/dashboard">Back to Dashboard</a>
+<div class="row align-center mb-5">
+    <div class="card text-bg-primary p-3 col-md-6">
+        <h2 class="card-title">{{post.title}}</h2>
+        <p class="card-text">By: {{post.user.username}}</p>
+        <p class="card-text">{{post.contents}}</p>
+        {{#each post.comments}}
+            <p class="card-text">Comment by: {{this.user.username}}</p>
+            <p class="card-text">{{this.content}}</p>
+        {{/each}}
+    <div class="text-bg-secondary p-3 col-md-6">
+        {{#if authenticated}}
+            <form class="form login-form form-group" action="/posts/{{post.id}}/comment" method="POST">
+                <textarea class="form-text" name="content" placeholder="Leave a comment"></textarea>
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+        {{/if}}
+    </div>
+    <div>
+        <a class="link-body-emphasis" href="/dashboard">Back to Dashboard</a>
+    </div>
+</div>

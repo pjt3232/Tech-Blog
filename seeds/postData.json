@@ -1,17 +1,17 @@
 [
     {
         "title": "First Post",
-        "content": "Hey, everyone! My name is John and this is my first post.",
+        "contents": "Hey, everyone! My name is John and this is my first post.",
         "userId": "1"
     },
     {
         "title": "Second Post",
-        "content": "Dogs are better than cats.",
+        "contents": "Dogs are better than cats.",
         "userId": "2"
     },
     {
         "title": "Third Post",
-        "content": "What is everyone's favorite sports team?",
+        "contents": "What is everyone's favorite sports team?",
         "userId": "3"
     }
 ]
