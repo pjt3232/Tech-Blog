@@ -18,5 +18,11 @@ router.get('/logout', authController.logout);
 
 router.get('/dashboard', dashboardController.getDashboard);
 
+router.post('/dashboard/post', postController.createPost);
+
+router.put('/dashboard/edit/:id', postController.updatePost);
+
+router.delete('/dashboard.delete/:id', postController.deletePost);
+
 
 module.exports = router;

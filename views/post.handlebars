@@ -1,21 +1,33 @@
-<div class="row align-center mb-5">
-    <div class="card text-bg-primary p-3 col-md-6">
+{{#extend "main"}}
+
+{{#contentFor "title"}}{{post.title}}{{/contentFor}}
+{{#contentFor "content"}}
+<div class="card">
+    <div class="carb-body">
         <h2 class="card-title">{{post.title}}</h2>
-        <p class="card-text">By: {{post.user.username}}</p>
         <p class="card-text">{{post.contents}}</p>
-        {{#each post.comments}}
-            <p class="card-text">Comment by: {{this.user.username}}</p>
-            <p class="card-text">{{this.content}}</p>
-        {{/each}}
-    <div class="text-bg-secondary p-3 col-md-6">
-        {{#if authenticated}}
-            <form class="form login-form form-group" action="/posts/{{post.id}}/comment" method="POST">
-                <textarea class="form-text" name="content" placeholder="Leave a comment"></textarea>
-                <button class="btn btn-primary" type="submit">Submit</button>
-            </form>
-        {{/if}}
-    </div>
-    <div>
-        <a class="link-body-emphasis" href="/dashboard">Back to Dashboard</a>
+        <p class="card-text"><small class="text-muted">
+            Posted by {{post.User.username}}
+        </small></p>
     </div>
 </div>
+
+<h3 class="mt-4">Comments</h3>
+{{#if comments.length}}
+<ul class="list-group mt-3">
+    {{#each comments}}
+    <li class="list-group-item">
+        <div class="d-flex justify-content-between">
+            <span>{{this.content}}</span>
+            <span class="text-muted">
+                {{this.User.username}}
+            </span>
+        </div>
+    </li>
+    {{/each}}   
+</ul>
+{{else}}
+<p>No comments yet.</p>
+{{/if}}
+{{/contentFor}}
+{{/extend}}
