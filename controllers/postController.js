@@ -1,76 +1,29 @@
-const Post = require('../models/Post');
+const express = require('express');
+const router = express.Router();
+const { Post, Comment } = require('../models');
 
-const postController = {
-    getAllPosts: async (req, res) => {
-        try {
-            const posts = await Post.findAll();
-            res.json(posts);
-        } catch (error) {
-            res.status(500).json(error);
-        }
-    },
-
-    getPostById: async (req, res) => {
-        try {
-            const { id } = req.params;
-            const post = await Post.findByPk(id);
-
-            if (!post) {
-                res.status(400).json({ message: 'Post not found' });
-                return;
-            }
-            res.json(post);
-        } catch (error) {
-            res.status(500).json(error);
-        }
-    },
-
-    createPost: async (req, res) => {
-        try {
-            const { title, contents } = req.body;
-            const post = await Post.create({ title, contents, userId: req.session.user.id });
-            res.json(post);
-        } catch (error) {
-            res.status(500).json(error);
-        }
-    },
-
-    updatePost: async (req, res) => {
-        try {
-            const { id } = req.params;
-            const { title, contents } = req.body;
-            const post = await Post.findByPk(id);
-
-            if (!post) {
-                res.status(404).json({ message: 'Post not found' });
-                return;
-            }
-
-            post.title = title;
-            post.content = contents;
-            await post.save();
-            res.json({ message: 'Post updated successfully' });
-        } catch (error) {
-            res.status(500).json(error);
-        }
-    },
-
-    deletePost: async (req, res) => {
-        try {
-            const { id } = req.params;
-            const post = await Post.findByPk(id);
-
-            if (!post) {
-                res.status(404).json({ message: 'Post not found' });
-                return;
-            }
-
-            await post.destroy();
-            res.json({ message: 'Post deleted successfully' });
-        } catch (error) {
-            res.status(500).json(error);
-        }
+router.get('/post:id', async (req, res) => {
+    const { id } = req.parms;
+    try {
+        const blogPost = await Post.findByPk(id, { include: Comment });
+        res.render('post', { blogPost });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-};
+});
 
-module.exports = postController;
+router.post('post/:id/comment', async (req, res) => {
+    const { id } = req.params;
+    const { comment } = req.body;
+    try {
+        const userId = req.session.user.id;
+        await Comment.create({ comment, postId: id, userId });
+        res.redirect('/post/${id}');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+module.exports = router;

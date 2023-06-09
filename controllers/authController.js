@@ -1,61 +1,48 @@
+const express = require('express');
+const router = express.Router();
 const bcrypt = require('bcrypt');
 const { User } = require('../models/User');
 
-const authController = {
-    signup: async (req, res) => {
-        try {
-            const { username, password } = req.body;
-            const hashedPassword = await bcrypt.hash(password, 10);
-            const user = await User.create({ username, password: hashedPassword });
+router.get('/login', (req, res) => {
+    res.render('login');
+});
 
-            req.session.save(() => {
-                req.session.user = user;
-                req.session.loggedIn = true;
-                res.json(user);
-            });
-        } catch (error) {
-            res.status(500).json(error)
+router.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        const user = await User.findOne({ where: { username } });
+        if (user && bcrypt.compareSync(password, user.password)) {
+            req.session.user = user;
+            res.redirect('/dashboard');
+        } else {
+            res.render('login', { error: 'Invalid username or password' });
         }
-    },
-
-    login: async (req, res) => {
-        try {
-            const { username, password } = req.body;
-            const user = await User.findOne({ where: { username } });
-
-            if (!user) {
-                res.status(400).json({ message: 'Invalid username or password' });
-                return;
-            }
-            const validPassword = await bcrypt.compare(password, user.password);
-            if (!validPassword) {
-                res.status(400).json({ message: 'Invalid username or password' });
-                return;
-            }
-
-            req.session.save(() => {
-                req.session.user = user;
-                req.session.loggedIn = true;
-                res.json(user);
-            });
-        } catch (error) {
-            res.status(500).json(error);
-        }
-    },
-
-    logout: (req, res) => {
-        req.session.destroy(() => {
-            res.redirect('/');
-        });
-    },
-
-    getLoginPage: (req, res) => {
-        res.render('login');
-    },
-
-    getSignUpPage: (req, res) => {
-        res.render('signup');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-};
+});
 
-module.exports = authController;
+router.get('/signup', (req, res) => {
+    res.render('signup');
+});
+
+router.post('/signup', async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        const hashedPassword = bcrypt.hashSync(password, 10);
+        const user = await User.create({ username, password: hashedPassword });
+        req.session.user = user;
+        res.redirect ('/dashboard');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
+
+module.exports = router;
