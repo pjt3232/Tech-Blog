@@ -47,6 +47,14 @@ const authController = {
         req.session.destroy(() => {
             res.redirect('/');
         });
+    },
+
+    getLoginPage: (req, res) => {
+        res.render('login');
+    },
+
+    getSignUpPage: (req, res) => {
+        res.render('signup');
     }
 };
 

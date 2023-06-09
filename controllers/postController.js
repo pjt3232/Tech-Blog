@@ -47,7 +47,7 @@ const postController = {
             }
 
             post.title = title;
-            post.content = content;
+            post.content = contents;
             await post.save();
             res.json({ message: 'Post updated successfully' });
         } catch (error) {

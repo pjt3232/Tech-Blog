@@ -9,6 +9,7 @@ const commentController = {
                 user_id: req.session.user.id,
                 post_id: postId,
             });
+            res.json(comment);
             res.status(201).json({ message: 'Comment created successfully' });
         } catch (error) {
             res.status(500).json(error);
