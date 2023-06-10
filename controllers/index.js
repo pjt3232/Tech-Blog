@@ -4,12 +4,10 @@ const homeController = require('./homeController');
 const dashboardController = require('./dashboardController');
 const postController = require('./postController');
 const authController = require('./authController');
-const withAuth = require('../utils/auth');
 
-router.use(withAuth);
+router.use('/', authController);
 router.use('/', homeController);
-router.use('/auth', authController);
-router.use('/post', postController);
-router.use('/dashboard', dashboardController);
+router.use('/', postController);
+router.use('/', dashboardController);
 
 module.exports = router;

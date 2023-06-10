@@ -1,26 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const { Post, Comment } = require('../models');
+const Post = require('../models/Post');
+const withAuth = require('../utils/auth');
 
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', withAuth, async (req, res) => {
     try {
-        const userId = req.session.user.id;
+        const userId = req.session.userId;
         const blogPosts = await Post.findAll({ where: { userId } });
-        res.render('dashboard', { blogPosts });
+
+        if (blogPosts.length === 0) {
+            res.render('dashboard', { message: "You haven't made any posts" });
+        } else {
+            res.render('dashboard', { blogPosts });
+        }
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
-router.get('/dashboard/new', (req, res) => {
+router.get('/dashboard/new', withAuth, async (req, res) => {
     res.render('new-blogpost');
 });
 
-router.post('/dashboard/new', async (req, res) => {
+router.post('/dashboard/new', withAuth, async (req, res) => {
     const { title, contents } = req.body;
     try {
-        const userId = req.session.user.id;
+        const userId = req.session.userId;
         await Post.create({ title, contents, userId });
         res.redirect('/dashboard');
     } catch (error) {
@@ -29,7 +35,7 @@ router.post('/dashboard/new', async (req, res) => {
     }
 });
 
-router.get('/dashboard/edit/:id', async (req, res) => {
+router.get('/dashboard/edit/:id', withAuth, async (req, res) => {
     const { id } = req.params;
     try {
         const blogPost = await Post.findByPk(id);
@@ -40,7 +46,7 @@ router.get('/dashboard/edit/:id', async (req, res) => {
     }
 });
 
-router.post('/dashboard/edit/:id', async (req, res) => {
+router.post('/dashboard/edit/:id', withAuth,  async (req, res) => {
     const { id } = req.params;
     const { title, contents } = req.body;
     try {
@@ -52,7 +58,7 @@ router.post('/dashboard/edit/:id', async (req, res) => {
     }
 });
 
-router.get('/dashboard/delete/:id', async (req, res) => {
+router.get('/dashboard/delete/:id', withAuth, async (req, res) => {
     const { id } = req.params;
     try {
         await Post.destroy({ where: { id } });

@@ -1,39 +1,19 @@
-{{#extends "main"}}
-
-{{#contentFor "title"}}Dashboard{{/contentFor}}
-{{#contentFor "content"}}
 <div class="container">
-    <h2>Your Posts</h2>
-    {{#if userPosts}}
+    <h1>Dashboard</h1>
+    <a href="/dashboard/new" class="btn btn-primary mb-3">Create New Post</a>
+    {{#if posts}}
     <ul class="list-group">
-        {{#each userPosts}}
+        {{#each posts}}
         <li class="list-group-item">
-            <div class="d-flex justify-content-between">
-                <h5>{{title}}</h5>
-                <div>
-                    <a href="/edit/{{id}}" class="btn btn-primary">Edit</a>
-                    <a href="/delete/{{id}}" class="btn btn-danger">Delete</a>
-                </div>
-            </div>
+            <h3>{{title}}</h3>
+            <p>{{contents}}</p>
+            <a href="/dashboard/edit/{{id}}" class="btn btn-secondary">Edit</a>
+            <a href="/dashboard/delete/{{id}}" class="btn btn-danger">Delete</a>
         </li>
         {{/each}}
     </ul>
     {{else}}
-    <p>No posts found.</p>
+    <p>You have no posts</p>
     {{/if}}
-
-    <h3>Create a New Post</h3>
-    <form method="POST" action="/post">
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" name="title" required="true">
-        </div>
-        <div class="form-group">
-            <label for="content">Content</label>
-            <textarea class="form-control" id="content" name="content" rows="5" required="true"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Create Post</button>
-    </form>
+    <a href="/logout" class="btn btn-primary">Logout</a>
 </div>
-{{/contentFor}}
-{{/extend}}

@@ -1,9 +1,6 @@
-{{#extend "main"}}
-
-{{#contentFor "title"}}SignUp{{/contentFor}}
-{{#contentFor "content"}}
+<h1>Signup</h1>
 <div class="container">
-    <h2>SignUp</h2>
+    <h2>Create an account</h2>
     <form method="POST" action="/signup">
         <div class="form-group">
             <label for="username">Username</label>
@@ -15,6 +12,5 @@
         </div>
         <button type="submit" class="btn btn-primary">Sign Up</button>
     </form>
+    <a href="/">Back to the login</a>
 </div>
-{{/contentFor}}
-{{/extend}}

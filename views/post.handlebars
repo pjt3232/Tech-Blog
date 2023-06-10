@@ -1,33 +1,24 @@
-{{#extend "main"}}
-
-{{#contentFor "title"}}{{post.title}}{{/contentFor}}
-{{#contentFor "content"}}
-<div class="card">
-    <div class="carb-body">
-        <h2 class="card-title">{{post.title}}</h2>
-        <p class="card-text">{{post.contents}}</p>
-        <p class="card-text"><small class="text-muted">
-            Posted by {{post.User.username}}
-        </small></p>
-    </div>
-</div>
-
-<h3 class="mt-4">Comments</h3>
-{{#if comments.length}}
-<ul class="list-group mt-3">
-    {{#each comments}}
-    <li class="list-group-item">
-        <div class="d-flex justify-content-between">
-            <span>{{this.content}}</span>
-            <span class="text-muted">
-                {{this.User.username}}
-            </span>
+<div class="container">
+    <h1>{{post.title}}</h1>
+    <p>{{post.contents}}</p>
+    <h3>Comments</h3>
+    {{#if comments}}
+    <ul class="list-group">
+        {{#each comments}}
+        <li class="list-group-item">
+            <p>{{this}}</p>
+        </li>
+        {{/each}}
+    </ul>
+    {{else}}
+    <p>No comments yet</p>
+    {{/if}}
+    <form method="POST" action="/post/{{id}}/comment">
+        <div class="mb-3">
+            <label for="comment" class="form-label">Add Comment</label>
+            <textarea class="form-control" id="comment" name="comment" required="true"></textarea>
         </div>
-    </li>
-    {{/each}}   
-</ul>
-{{else}}
-<p>No comments yet.</p>
-{{/if}}
-{{/contentFor}}
-{{/extend}}
+        <input type="hidden" name="postId" value="post.id">
+        <button type="submit" class="btn btn-primary">Submit Comment</button>
+    </form>
+</div>

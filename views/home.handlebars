@@ -1,9 +1,6 @@
-{{#extend "main"}}
-
-{{#contentFor "title"}}Home{{/contentFor}}
-{{#contentFor "content"}}
+<h1>Home</h1>
 <div class="container">
-    <h2>Home</h2>
+    <h2>Web Development Blog Posts</h2>
     {{#if posts}}
     <ul class="list-group">
         {{#each posts}}
@@ -16,5 +13,3 @@
     <p>No posts found.</p>
     {{/if}}
 </div>
-{{/contentFor}}
-{{/extend}}

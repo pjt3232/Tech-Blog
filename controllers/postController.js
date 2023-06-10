@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { Post, Comment } = require('../models');
+const withAuth = require('../utils/auth');
 
-router.get('/post:id', async (req, res) => {
-    const { id } = req.parms;
+router.get('/post:id', withAuth, async (req, res) => {
+    const { id } = req.params;
     try {
         const blogPost = await Post.findByPk(id, { include: Comment });
         res.render('post', { blogPost });
@@ -13,11 +14,11 @@ router.get('/post:id', async (req, res) => {
     }
 });
 
-router.post('post/:id/comment', async (req, res) => {
+router.post('/post/:id/comment', withAuth, async (req, res) => {
     const { id } = req.params;
     const { comment } = req.body;
     try {
-        const userId = req.session.user.id;
+        const userId = req.session.userId;
         await Comment.create({ comment, postId: id, userId });
         res.redirect('/post/${id}');
     } catch (error) {

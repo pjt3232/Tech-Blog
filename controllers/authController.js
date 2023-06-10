@@ -1,24 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const { User } = require('../models/User');
+const User = require('../models/User');
 
-router.get('/login', (req, res) => {
+router.get('/', (req, res) => {
     res.render('login');
 });
 
-router.post('/login', async (req, res) => {
-    const { username, password } = req.body;
+router.post('/', async (req, res) => {
     try {
-        const user = await User.findOne({ where: { username } });
-        if (user && bcrypt.compareSync(password, user.password)) {
-            req.session.user = user;
-            res.redirect('/dashboard');
+        const user = await User.findOne({ where: { username: req.body.username } });
+        if (user && bcrypt.compareSync(req.body.password, user.password)) {
+            req.session.userId = user.id;
+            res.redirect('/home');
         } else {
             res.render('login', { error: 'Invalid username or password' });
         }
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
@@ -33,10 +32,10 @@ router.post('/signup', async (req, res) => {
         const hashedPassword = bcrypt.hashSync(password, 10);
         const user = await User.create({ username, password: hashedPassword });
         req.session.user = user;
-        res.redirect ('/dashboard');
+        res.redirect('/');
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Sorry! Your username is already taken. Please, go back to the main login screen.' });
     }
 });
 

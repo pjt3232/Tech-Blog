@@ -1,17 +1,9 @@
-const sessionExpirationMiddleware = (req, res, next) => {
-    if (req.session.user) {
-        const sessionTimeout = 30*60*1000;
-        const now = Date.now();
-        if (req.session.lastActivity && now - req.session.lastActivity > sessionTimeout) {
-            req.session.destroy();
-            res.redirect('login');
-        } else {
-            req.session.lastActivity = now;
-            next();
-        } 
-    } else {
+const withAuth = (req, res, next) => {
+    if (req.session.userId) {
         next();
+    } else {
+        res.redirect('/');
     }
 };
 
-module.exports = sessionExpirationMiddleware;
+module.exports = withAuth;
