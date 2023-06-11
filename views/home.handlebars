@@ -1,11 +1,13 @@
-<h1>Home</h1>
 <div class="container">
+    <h1>Home</h1>
     <h2>Web Development Blog Posts</h2>
-    {{#if posts}}
+    {{#if post}}
     <ul class="list-group">
-        {{#each posts}}
+        {{#each post}}
         <li class="list-group-item">
-            {{title}}
+            <a href="/post/{{id}}">
+                <h3>{{title}}</h3>
+            </a>
         </li>
         {{/each}}
     </ul>

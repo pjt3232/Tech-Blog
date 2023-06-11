@@ -2,11 +2,11 @@
     <h1>{{post.title}}</h1>
     <p>{{post.contents}}</p>
     <h3>Comments</h3>
-    {{#if comments}}
+    {{#if comment.length}}
     <ul class="list-group">
-        {{#each comments}}
+        {{#each comment}}
         <li class="list-group-item">
-            <p>{{this}}</p>
+            <p>{{content}}</p>
         </li>
         {{/each}}
     </ul>

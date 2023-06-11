@@ -5,12 +5,9 @@ const withAuth = require('../utils/auth');
 
 router.get('/home', withAuth, async (req, res) => {
     try {
-        const blogPosts = await Post.findAll();
-        if (blogPosts.length === 0) {
-            res.render('home', { message: 'No blog posts available' });
-        } else {
-            res.render('home', { blogPosts });
-        }
+        const post = await Post.findAll();
+        res.render('home', { post });
+        console.log(res);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Internal Server Error' });

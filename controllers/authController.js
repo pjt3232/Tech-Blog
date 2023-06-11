@@ -8,9 +8,11 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+    const user = await User.findOne({ where: { username: req.body.username } });
+    console.log(user);
+    const password = req.body.password; 
     try {
-        const user = await User.findOne({ where: { username: req.body.username } });
-        if (user && bcrypt.compareSync(req.body.password, user.password)) {
+        if (user && bcrypt.compareSync(password, user.password)) {
             req.session.userId = user.id;
             res.redirect('/home');
         } else {
@@ -27,8 +29,9 @@ router.get('/signup', (req, res) => {
 });
 
 router.post('/signup', async (req, res) => {
-    const { username, password } = req.body;
     try {
+        const username = req.body.username;
+        const password = req.body.password;
         const hashedPassword = bcrypt.hashSync(password, 10);
         const user = await User.create({ username, password: hashedPassword });
         req.session.user = user;
@@ -40,8 +43,13 @@ router.post('/signup', async (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.redirect('/');
+    if (req.session.userId) {
+        req.session.destroy(() => {
+            res.status(204).end();
+        });
+    } else {
+        res.redirect('/');
+    }
 });
 
 module.exports = router;

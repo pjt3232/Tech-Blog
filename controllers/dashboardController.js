@@ -4,15 +4,11 @@ const Post = require('../models/Post');
 const withAuth = require('../utils/auth');
 
 router.get('/dashboard', withAuth, async (req, res) => {
+    const userId = req.session.userId;
     try {
-        const userId = req.session.userId;
-        const blogPosts = await Post.findAll({ where: { userId } });
-
-        if (blogPosts.length === 0) {
-            res.render('dashboard', { message: "You haven't made any posts" });
-        } else {
-            res.render('dashboard', { blogPosts });
-        }
+        const post = await Post.findAll({ where: { userId } });
+        console.log(post);
+        res.render('dashboard', { post });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -24,9 +20,11 @@ router.get('/dashboard/new', withAuth, async (req, res) => {
 });
 
 router.post('/dashboard/new', withAuth, async (req, res) => {
-    const { title, contents } = req.body;
+    const title = req.body.title;
+    const contents = req.body.contents;
+    const userId = req.session.userId;
+    
     try {
-        const userId = req.session.userId;
         await Post.create({ title, contents, userId });
         res.redirect('/dashboard');
     } catch (error) {
@@ -36,10 +34,11 @@ router.post('/dashboard/new', withAuth, async (req, res) => {
 });
 
 router.get('/dashboard/edit/:id', withAuth, async (req, res) => {
-    const { id } = req.params;
+    const id = req.params.id;
     try {
-        const blogPost = await Post.findByPk(id);
-        res.render('edit-blogpost', { blogPost });
+        const post = await Post.findByPk(id);
+        console.log(post);
+        res.render('edit-blogpost', { post });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -47,8 +46,9 @@ router.get('/dashboard/edit/:id', withAuth, async (req, res) => {
 });
 
 router.post('/dashboard/edit/:id', withAuth,  async (req, res) => {
-    const { id } = req.params;
-    const { title, contents } = req.body;
+    const id = req.params.id;
+    const title = req.body.title;
+    const contents = req.body.contents
     try {
         await Post.update({ title, contents }, { where: { id } });
         res.redirect('/dashbaord');
@@ -59,7 +59,7 @@ router.post('/dashboard/edit/:id', withAuth,  async (req, res) => {
 });
 
 router.get('/dashboard/delete/:id', withAuth, async (req, res) => {
-    const { id } = req.params;
+    const id = req.params.id;
     try {
         await Post.destroy({ where: { id } });
         res.redirect('/dashboard');
