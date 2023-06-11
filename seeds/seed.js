@@ -1,9 +1,11 @@
+//grab json data & models
 const userData = require('./userData.json');
 const postData = require('./postData.json');
 const commentData = require('./commentData.json');
 const { User, Post, Comment } = require('../models');
 const sequelize = require('../config/connection');
 
+//uses sequelize and json data to seed models
 const seedDatabase = async () => {
     await sequelize.sync({ force: true });
   

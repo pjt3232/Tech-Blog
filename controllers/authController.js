@@ -1,12 +1,15 @@
+//grabs express, bcrypt, middleware, and Models
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
+//get route to render default 'login' view 
 router.get('/', (req, res) => {
     res.render('login');
 });
 
+//post route to use req to find and compare users and start a session for that user
 router.post('/', async (req, res) => {
     const user = await User.findOne({ where: { username: req.body.username } });
     console.log(user);
@@ -24,10 +27,12 @@ router.post('/', async (req, res) => {
     }
 });
 
+//get route to render the signup page
 router.get('/signup', (req, res) => {
     res.render('signup');
 });
 
+//post route to take the req and create a User the redirect to login page
 router.post('/signup', async (req, res) => {
     try {
         const username = req.body.username;
@@ -42,6 +47,7 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+//get route to log the user out and end session if user has an active session
 router.get('/logout', (req, res) => {
     if (req.session.userId) {
         req.session.destroy(() => {

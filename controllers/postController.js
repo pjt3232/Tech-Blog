@@ -1,8 +1,10 @@
+//grabs express, middleware, and Models
 const express = require('express');
 const router = express.Router();
 const { Post, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
+//get route that grabs params and finds that Post by PK then renders 'post' view
 router.get('/post/:id', withAuth, async (req, res) => {
     try {
         const id = req.params.id;
@@ -15,6 +17,7 @@ router.get('/post/:id', withAuth, async (req, res) => {
     }
 });
 
+//post route that grabs params and takes req to create a comment at params postId and userID
 router.post('/post/:id/comment', withAuth, async (req, res) => {
     try {
         const id = req.params.id;

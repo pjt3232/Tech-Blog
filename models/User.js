@@ -1,7 +1,7 @@
-const bcrypt = require('bcrypt');
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
+//creates Model for user data
 class User extends Model {}
 
 User.init(

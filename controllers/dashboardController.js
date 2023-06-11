@@ -1,8 +1,10 @@
+//grabs express, middleware, and Models
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
 const withAuth = require('../utils/auth');
 
+//get route for grabbing all posts of the current user and rendering 'dashboard' view with user's posts
 router.get('/dashboard', withAuth, async (req, res) => {
     const userId = req.session.userId;
     try {
@@ -15,10 +17,12 @@ router.get('/dashboard', withAuth, async (req, res) => {
     }
 });
 
+//get route to render 'new-blogpost' view 
 router.get('/dashboard/new', withAuth, async (req, res) => {
     res.render('new-blogpost');
 });
 
+//post route to create a new post using the req then redirects to 'dashboard'
 router.post('/dashboard/new', withAuth, async (req, res) => {
     const title = req.body.title;
     const contents = req.body.contents;
@@ -33,6 +37,7 @@ router.post('/dashboard/new', withAuth, async (req, res) => {
     }
 });
 
+//get route to grab post by params and render 'edit-blogpost' view with that post
 router.get('/dashboard/edit/:id', withAuth, async (req, res) => {
     const id = req.params.id;
     try {
@@ -45,6 +50,7 @@ router.get('/dashboard/edit/:id', withAuth, async (req, res) => {
     }
 });
 
+//post route to update the params post with the req then redirect to 'dashboard'
 router.post('/dashboard/edit/:id', withAuth,  async (req, res) => {
     const id = req.params.id;
     const title = req.body.title;
@@ -58,6 +64,7 @@ router.post('/dashboard/edit/:id', withAuth,  async (req, res) => {
     }
 });
 
+//get route for deleting the post set by params then redirects to 'dashboard'
 router.get('/dashboard/delete/:id', withAuth, async (req, res) => {
     const id = req.params.id;
     try {

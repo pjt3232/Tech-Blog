@@ -1,7 +1,9 @@
+//grabs each Model
 const User = require('./User');
 const Post = require('./Post');
 const Comment = require('./Comment');
 
+//creates and establishes connection between Models
 User.hasMany(Post, {
     foreignKey: 'user_id',
     onDelete: 'CASCADE',
