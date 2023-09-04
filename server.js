@@ -9,7 +9,7 @@ const routes = require('./controllers');
 
 //establishes app and port
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 //session variable
 const sess = {

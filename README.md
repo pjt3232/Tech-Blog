@@ -1,5 +1,7 @@
 # Tech-Blog
 
+[![Screen-Shot-2023-09-04-at-4-37-10-PM.png](https://i.postimg.cc/y6k5CVxS/Screen-Shot-2023-09-04-at-4-37-10-PM.png)](https://postimg.cc/6Txzdxd9)
+
 ## Description
 My motivation for this project was to showcase my skills to future employers. I built this project to become a better fullstack web devloper and to build off of new concepts I had recently learned. This application solves the problem of wanting a community of web devlopers come together on a website to share infromation from their own coding experience to help others in the same industry or who want to learn more about the field. In this project, I learned how to use the MVC model for building a back-end application and how to implement middleware for the server such as sessions and handlebars templates. This application uses Sequelize, MySQL2, bcrypt, express-session, connect-session-sequelize, and Express.js.
 
